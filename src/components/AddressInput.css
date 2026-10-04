@@ -1,0 +1,75 @@
+.address-input {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.address-input-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.address-input-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.address-input-field:focus-within {
+  border-color: var(--primary);
+}
+
+.address-input-icon {
+  display: flex;
+  color: var(--text);
+}
+
+.address-input-field input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 0;
+  border: none;
+  outline: none;
+  font: inherit;
+  color: var(--text);
+  background: transparent;
+}
+
+.address-input-suggestions {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  margin: 4px 0 0;
+  padding: 4px 0;
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.address-input-suggestions button {
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  color: var(--text);
+}
+
+.address-input-suggestions button:hover,
+.address-input-suggestions button:focus-visible {
+  background: var(--surface-muted);
+}
+
+.address-input-error {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  color: #b00020;
+}

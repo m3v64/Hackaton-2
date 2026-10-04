@@ -39,3 +39,54 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.icon-button {
+  display: flex;
+  padding: 6px;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: var(--text);
+}
+
+.icon-button:hover {
+  background: var(--surface-muted);
+}
+
+.icon-button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.screen-heading {
+  margin: 8px 0 8px;
+  font-size: 1.6rem;
+  font-weight: 500;
+}
+
+.screen-intro {
+  margin: 0 0 24px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.screen-hint,
+.screen-error {
+  margin: -8px 0 16px;
+  font-size: 0.8rem;
+}
+
+.screen-hint {
+  color: var(--text-muted);
+}
+
+.screen-error {
+  color: #b00020;
+}
