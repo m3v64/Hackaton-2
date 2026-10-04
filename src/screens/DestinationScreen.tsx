@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { reverseGeocode, type Place } from '../api/ors'
+import { reverseGeocode, type LngLat, type Place } from '../api/ors'
 import AddressInput from '../components/AddressInput'
-import { ArrowRightIcon, LocateIcon, OriginIcon, PinIcon } from '../components/icons'
+import { ArrowRightIcon, InfoIcon, LocateIcon, OriginIcon, PinIcon } from '../components/icons'
+import MapView from '../components/MapView'
 
 type Props = {
   from: Place | null
@@ -15,6 +16,20 @@ function DestinationScreen({ from, to, onFromChange, onToChange, onNext }: Props
   const [locating, setLocating] = useState(false)
   const [locationError, setLocationError] = useState<string | null>(null)
 
+  /** Zet het vertrekpunt op een exact punt en zoekt het bijbehorende adres op. */
+  async function setFromCoordinates(coordinates: LngLat) {
+    setLocating(true)
+    setLocationError(null)
+    try {
+      const place = await reverseGeocode(coordinates)
+      onFromChange({ label: place?.label ?? 'Gekozen locatie', coordinates })
+    } catch (err) {
+      setLocationError((err as Error).message)
+    } finally {
+      setLocating(false)
+    }
+  }
+
   function locateUser() {
     if (!navigator.geolocation) {
       setLocationError('Je browser ondersteunt geen locatiebepaling.')
@@ -24,16 +39,7 @@ function DestinationScreen({ from, to, onFromChange, onToChange, onNext }: Props
     setLocating(true)
     setLocationError(null)
     navigator.geolocation.getCurrentPosition(
-      async ({ coords }) => {
-        try {
-          const place = await reverseGeocode([coords.longitude, coords.latitude])
-          onFromChange(place ?? { label: 'Huidige locatie', coordinates: [coords.longitude, coords.latitude] })
-        } catch (err) {
-          setLocationError((err as Error).message)
-        } finally {
-          setLocating(false)
-        }
-      },
+      ({ coords }) => setFromCoordinates([coords.longitude, coords.latitude]),
       () => {
         setLocationError('Locatie ophalen mislukt. Geef toestemming of typ een adres.')
         setLocating(false)
@@ -79,6 +85,12 @@ function DestinationScreen({ from, to, onFromChange, onToChange, onNext }: Props
           value={to}
           onChange={onToChange}
         />
+
+        <p className="section-label">Locatie op kaart</p>
+        <MapView from={from} to={to} onMapClick={setFromCoordinates} />
+        <p className="screen-note">
+          <InfoIcon /> Tik op de kaart om het ophaalpunt te verplaatsen.
+        </p>
       </main>
       <footer className="app-footer">
         <button type="button" className="btn btn-primary" disabled={!from || !to} onClick={onNext}>
