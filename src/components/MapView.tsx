@@ -22,6 +22,8 @@ type Props = {
   /** Voortgang over de route (0–1); tekent het gereden deel en de taxi */
   progress?: number
   className?: string
+  /** Klein label linksboven op de kaart, bijv. "Rit gepauzeerd" */
+  label?: string
   onMapClick?: (coordinates: LngLat) => void
 }
 
@@ -67,7 +69,7 @@ function RouteLayer({ route, progress }: { route: LngLat[]; progress: number }) 
   )
 }
 
-function MapView({ from, to, route, progress = 0, className, onMapClick }: Props) {
+function MapView({ from, to, route, progress = 0, className, label, onMapClick }: Props) {
   const hasRoute = route && route.length > 1
 
   return (
@@ -95,6 +97,7 @@ function MapView({ from, to, route, progress = 0, className, onMapClick }: Props
         <FitToPlaces from={from} to={to} route={route} />
         {onMapClick && <ClickHandler onMapClick={onMapClick} />}
       </MapContainer>
+      {label && <p className="map-view-label">{label}</p>}
       {hasRoute && (
         <div className="map-view-legend" aria-hidden="true">
           <span className="map-view-legend-driven">gereden</span>

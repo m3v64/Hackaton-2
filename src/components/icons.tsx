@@ -78,3 +78,26 @@ export function AlertIcon({ size = 16 }: IconProps) {
     </svg>
   )
 }
+
+export function WarningIcon({ size = 16 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" aria-hidden="true">
+      <path
+        d="M8 1.8 14.8 13.8H1.2L8 1.8Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinejoin="round"
+      />
+      <path d="M8 6.3v3.6M8 11.6v.4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+export function CheckboxIcon({ size = 16 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="2" y="2" width="12" height="12" rx="1.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  )
+}

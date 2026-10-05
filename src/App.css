@@ -141,3 +141,24 @@
   margin: 2px 0 0;
   font-size: 1.15rem;
 }
+
+/* Kaart over de volle breedte bovenaan een scherm */
+.map-banner {
+  flex-shrink: 0;
+  height: 260px;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+}
+
+.price-label {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.price-big {
+  margin: 0;
+  font-size: 2.2rem;
+  font-variant-numeric: tabular-nums;
+}

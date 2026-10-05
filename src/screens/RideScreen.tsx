@@ -20,14 +20,14 @@ function RideScreen({ from, to, route, status, onEndRide, onArrived }: Props) {
 
   return (
     <>
-      <MapView className="ride-map" from={from} to={to} route={route} progress={status.progress} />
+      <MapView className="map-banner" from={from} to={to} route={route} progress={status.progress} />
       <main className="app-content">
         <p className="ride-simulation-note">Gesimuleerde rit · {SIMULATION_SPEED}× versneld</p>
 
         <div className="ride-price-row">
           <div>
-            <p className="ride-price-label">{status.arrived ? 'Eindprijs' : 'Huidige prijs'}</p>
-            <p className="ride-price" aria-live="off">
+            <p className="price-label">{status.arrived ? 'Eindprijs' : 'Huidige prijs'}</p>
+            <p className="price-big" aria-live="off">
               {formatEuro(status.price)}
             </p>
           </div>

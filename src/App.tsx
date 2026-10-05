@@ -4,6 +4,7 @@ import Header from './components/Header'
 import DestinationScreen from './screens/DestinationScreen'
 import EstimateScreen from './screens/EstimateScreen'
 import RideScreen from './screens/RideScreen'
+import EndRideScreen from './screens/EndRideScreen'
 import { getRideStatus, startRide, type Ride } from './ride'
 import { STEPS, type Step } from './steps'
 import { useRideClock } from './useRideClock'
@@ -75,6 +76,15 @@ function App() {
           status={rideStatus}
           onEndRide={() => setStep('beeindigen')}
           onArrived={() => setStep('overzicht')}
+        />
+      ) : step === 'beeindigen' && ride && rideStatus && from && to ? (
+        <EndRideScreen
+          from={from}
+          to={to}
+          route={ride.route.coordinates}
+          status={rideStatus}
+          onCancel={() => setStep('rit')}
+          onConfirm={() => setStep('overzicht')}
         />
       ) : (
         <>
