@@ -55,3 +55,17 @@ export function InfoIcon({ size = 14 }: IconProps) {
     </svg>
   )
 }
+
+export function NavigateIcon({ size = 16 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" aria-hidden="true">
+      <path
+        d="M14.5 1.5 1.5 7l5.5 2 2 5.5 5.5-13Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}

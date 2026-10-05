@@ -79,9 +79,10 @@ export async function reverseGeocode([lng, lat]: LngLat): Promise<Place | null> 
 }
 
 /** Berekent de autoroute tussen vertrek en bestemming. */
-export async function getRoute(from: LngLat, to: LngLat): Promise<Route> {
+export async function getRoute(from: LngLat, to: LngLat, signal?: AbortSignal): Promise<Route> {
   const data = await request<DirectionsResponse>('/v2/directions/driving-car/geojson', {
     method: 'POST',
+    signal,
     headers: {
       Authorization: API_KEY,
       'Content-Type': 'application/json',
