@@ -3,7 +3,10 @@ import type { Place, Route } from './api/ors'
 import Header from './components/Header'
 import DestinationScreen from './screens/DestinationScreen'
 import EstimateScreen from './screens/EstimateScreen'
+import RideScreen from './screens/RideScreen'
+import { getRideStatus, startRide, type Ride } from './ride'
 import { STEPS, type Step } from './steps'
+import { useRideClock } from './useRideClock'
 import './App.css'
 
 function App() {
@@ -11,6 +14,11 @@ function App() {
   const [from, setFrom] = useState<Place | null>(null)
   const [to, setTo] = useState<Place | null>(null)
   const [route, setRoute] = useState<Route | null>(null)
+  const [ride, setRide] = useState<Ride | null>(null)
+
+  // De rit loopt alleen door zolang scherm 3 open staat.
+  const elapsed = useRideClock(ride, step === 'rit')
+  const rideStatus = ride ? getRideStatus(ride, elapsed) : null
 
   const index = STEPS.findIndex((s) => s.id === step)
   const current = STEPS[index]
@@ -26,6 +34,12 @@ function App() {
   function changeTo(place: Place | null) {
     setTo(place)
     setRoute(null)
+  }
+
+  function beginRide() {
+    if (!route) return
+    setRide(startRide(route))
+    setStep('rit')
   }
 
   return (
@@ -51,7 +65,16 @@ function App() {
           to={to}
           route={route}
           onRouteLoaded={setRoute}
-          onStart={goToNextStep}
+          onStart={beginRide}
+        />
+      ) : step === 'rit' && ride && rideStatus && from && to ? (
+        <RideScreen
+          from={from}
+          to={to}
+          route={ride.route.coordinates}
+          status={rideStatus}
+          onEndRide={() => setStep('beeindigen')}
+          onArrived={() => setStep('overzicht')}
         />
       ) : (
         <>
