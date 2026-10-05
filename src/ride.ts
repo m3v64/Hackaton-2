@@ -18,6 +18,8 @@ export type Ride = {
 }
 
 export type RideStatus = {
+  /** Verstreken ritduur in seconden */
+  elapsed: number
   /** Gereden afstand in meters */
   driven: number
   remainingDistance: number
@@ -50,6 +52,7 @@ export function getRideStatus(ride: Ride, elapsed: number): RideStatus {
   const margin = 0.1 * (1 - progress)
 
   return {
+    elapsed: time,
     driven,
     remainingDistance: ride.route.distance - driven,
     remainingTime: ride.duration - time,

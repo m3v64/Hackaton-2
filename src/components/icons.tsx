@@ -101,3 +101,19 @@ export function CheckboxIcon({ size = 16 }: IconProps) {
     </svg>
   )
 }
+
+export function CheckIcon({ size = 14 }: IconProps) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" aria-hidden="true">
+      <rect x="1.5" y="1.5" width="13" height="13" rx="2" fill="none" stroke="currentColor" strokeWidth="1.3" />
+      <path
+        d="m4.5 8.2 2.3 2.3 4.7-5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}

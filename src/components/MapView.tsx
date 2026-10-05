@@ -24,6 +24,8 @@ type Props = {
   className?: string
   /** Klein label linksboven op de kaart, bijv. "Rit gepauzeerd" */
   label?: string
+  /** Toon de legenda "gereden / resterend" bij een route */
+  showLegend?: boolean
   onMapClick?: (coordinates: LngLat) => void
 }
 
@@ -69,7 +71,16 @@ function RouteLayer({ route, progress }: { route: LngLat[]; progress: number }) 
   )
 }
 
-function MapView({ from, to, route, progress = 0, className, label, onMapClick }: Props) {
+function MapView({
+  from,
+  to,
+  route,
+  progress = 0,
+  className,
+  label,
+  showLegend = true,
+  onMapClick,
+}: Props) {
   const hasRoute = route && route.length > 1
 
   return (
@@ -98,7 +109,7 @@ function MapView({ from, to, route, progress = 0, className, label, onMapClick }
         {onMapClick && <ClickHandler onMapClick={onMapClick} />}
       </MapContainer>
       {label && <p className="map-view-label">{label}</p>}
-      {hasRoute && (
+      {hasRoute && showLegend && (
         <div className="map-view-legend" aria-hidden="true">
           <span className="map-view-legend-driven">gereden</span>
           <span className="map-view-legend-remaining">resterend</span>

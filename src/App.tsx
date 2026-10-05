@@ -5,6 +5,7 @@ import DestinationScreen from './screens/DestinationScreen'
 import EstimateScreen from './screens/EstimateScreen'
 import RideScreen from './screens/RideScreen'
 import EndRideScreen from './screens/EndRideScreen'
+import SummaryScreen from './screens/SummaryScreen'
 import { getRideStatus, startRide, type Ride } from './ride'
 import { STEPS, type Step } from './steps'
 import { useRideClock } from './useRideClock'
@@ -35,6 +36,14 @@ function App() {
   function changeTo(place: Place | null) {
     setTo(place)
     setRoute(null)
+  }
+
+  function closeSummary() {
+    setFrom(null)
+    setTo(null)
+    setRoute(null)
+    setRide(null)
+    setStep('bestemming')
   }
 
   function beginRide() {
@@ -86,18 +95,9 @@ function App() {
           onCancel={() => setStep('rit')}
           onConfirm={() => setStep('overzicht')}
         />
-      ) : (
-        <>
-          <main className="app-content">
-            <p>Scherm: {current.title}</p>
-          </main>
-          <footer className="app-footer">
-            <button type="button" className="btn btn-primary" onClick={goToNextStep}>
-              Volgende
-            </button>
-          </footer>
-        </>
-      )}
+      ) : step === 'overzicht' && ride && rideStatus && from && to ? (
+        <SummaryScreen from={from} to={to} ride={ride} status={rideStatus} onClose={closeSummary} />
+      ) : null}
     </div>
   )
 }
