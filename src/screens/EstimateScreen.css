@@ -1,0 +1,72 @@
+.trip-addresses {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.trip-address {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.trip-address-label {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.estimate-status {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+  color: var(--text-muted);
+}
+
+.estimate-status .screen-error {
+  margin: 0;
+}
+
+.price-range {
+  margin-top: 12px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: var(--primary-text);
+}
+
+.price-range-label,
+.price-range-note {
+  margin: 0;
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+.price-range-value {
+  margin: 4px 0;
+  font-size: 2rem;
+}
+
+.breakdown {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.breakdown dt {
+  color: var(--text);
+}
+
+.breakdown dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.breakdown-note {
+  margin: 12px 0 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}

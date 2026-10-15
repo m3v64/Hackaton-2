@@ -1,121 +1,104 @@
 import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import type { Place, Route } from './api/ors'
+import Header from './components/Header'
+import DestinationScreen from './screens/DestinationScreen'
+import EstimateScreen from './screens/EstimateScreen'
+import RideScreen from './screens/RideScreen'
+import EndRideScreen from './screens/EndRideScreen'
+import SummaryScreen from './screens/SummaryScreen'
+import { getRideStatus, startRide, type Ride } from './ride'
+import { STEPS, type Step } from './steps'
+import { useRideClock } from './useRideClock'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [step, setStep] = useState<Step>('bestemming')
+  const [from, setFrom] = useState<Place | null>(null)
+  const [to, setTo] = useState<Place | null>(null)
+  const [route, setRoute] = useState<Route | null>(null)
+  const [ride, setRide] = useState<Ride | null>(null)
+
+  // De rit loopt alleen door zolang scherm 3 open staat.
+  const elapsed = useRideClock(ride, step === 'rit')
+  const rideStatus = ride ? getRideStatus(ride, elapsed) : null
+
+  const index = STEPS.findIndex((s) => s.id === step)
+  const current = STEPS[index]
+  const canGoBack = step === 'schatting' || step === 'beeindigen'
+  const goToNextStep = () => setStep(STEPS[(index + 1) % STEPS.length].id)
+
+  // Een ander adres betekent een andere route; die wordt op scherm 2 opnieuw berekend.
+  function changeFrom(place: Place | null) {
+    setFrom(place)
+    setRoute(null)
+  }
+
+  function changeTo(place: Place | null) {
+    setTo(place)
+    setRoute(null)
+  }
+
+  function closeSummary() {
+    setFrom(null)
+    setTo(null)
+    setRoute(null)
+    setRide(null)
+    setStep('bestemming')
+  }
+
+  function beginRide() {
+    if (!route) return
+    setRide(startRide(route))
+    setStep('rit')
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+    <div className="app">
+      <Header
+        title={current.title}
+        subtitle={current.subtitle}
+        stepNumber={index + 1}
+        totalSteps={STEPS.length}
+        onBack={canGoBack ? () => setStep(STEPS[index - 1].id) : undefined}
+      />
+      {step === 'bestemming' ? (
+        <DestinationScreen
+          from={from}
+          to={to}
+          onFromChange={changeFrom}
+          onToChange={changeTo}
+          onNext={goToNextStep}
+        />
+      ) : step === 'schatting' && from && to ? (
+        <EstimateScreen
+          from={from}
+          to={to}
+          route={route}
+          onRouteLoaded={setRoute}
+          onStart={beginRide}
+        />
+      ) : step === 'rit' && ride && rideStatus && from && to ? (
+        <RideScreen
+          from={from}
+          to={to}
+          route={ride.route.coordinates}
+          status={rideStatus}
+          onEndRide={() => setStep('beeindigen')}
+          onArrived={() => setStep('overzicht')}
+        />
+      ) : step === 'beeindigen' && ride && rideStatus && from && to ? (
+        <EndRideScreen
+          from={from}
+          to={to}
+          route={ride.route.coordinates}
+          status={rideStatus}
+          onCancel={() => setStep('rit')}
+          onConfirm={() => setStep('overzicht')}
+        />
+      ) : step === 'overzicht' && ride && rideStatus && from && to ? (
+        <SummaryScreen from={from} to={to} ride={ride} status={rideStatus} onClose={closeSummary} />
+      ) : null}
+    </div>
   )
 }
 

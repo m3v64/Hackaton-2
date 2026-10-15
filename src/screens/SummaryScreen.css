@@ -1,0 +1,66 @@
+.summary-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.summary-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 6px 10px;
+  border: 1px solid var(--text);
+  border-radius: 4px;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.summary-map {
+  height: 180px;
+  margin: 12px 0;
+}
+
+.summary-addresses {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.summary-addresses p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.summary-addresses svg {
+  flex-shrink: 0;
+}
+
+.summary-addresses .summary-early {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.summary-comparison {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.summary-comparison dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-comparison .summary-comparison-strong {
+  font-weight: 600;
+}
